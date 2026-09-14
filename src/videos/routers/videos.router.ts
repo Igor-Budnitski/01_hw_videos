@@ -12,5 +12,5 @@ export const videosRouter = Router({});
 videosRouter
     // Get All Videos
 .get('',(req: Request, res)=>{
-    res.status(HttpStatus.Ok).send(db.videos);
+    res.status(HttpStatus.Success).send(db.videos);
 })
