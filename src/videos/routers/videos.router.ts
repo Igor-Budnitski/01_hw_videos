@@ -13,7 +13,7 @@ videosRouter
 
     .delete('', (req: Request, res: Response) => {
         db.videos = [];
-        res.status(HttpStatus.NoContent);
+        res.sendStatus(HttpStatus.NoContent);
     })
     // Get All Videos
     .get('', (req: Request, res) => {
