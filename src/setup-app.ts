@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import {videosRouter} from "./videos/routers/videos.router";
 
 export const setupApp = (app: Express) => {
     app.use(express.json()); // middleware для парсинга JSON в теле запроса
@@ -7,5 +8,8 @@ export const setupApp = (app: Express) => {
     app.get("/", (req, res) => {
         res.status(200).send("Hello world!");
     });
+
+    //Each module connects to it's own route
+    app.use('/videos', videosRouter);
     return app;
 };
