@@ -20,6 +20,19 @@ videosRouter
         res.status(HttpStatus.Success).send(db.videos);
     })
 
+    // Get by ID
+    .get('/:id', (req: Request<{ id: string }>, res: Response) => {
+        const video = db.videos.find((v) => v.id === +req.params.id);
+        if (!video) {
+            res
+                .status(HttpStatus.NotFound)
+                .send(
+                    createErrorMessages([{field: 'id', message: 'Video not found'}]),
+                )
+            return;
+        }
+        res.status(HttpStatus.Success).send(video);
+    })
     // Post a new video
 
     .post('', (req: Request<{}, {}, VideoInputDto>, res: Response) => {
@@ -39,7 +52,7 @@ videosRouter
                 availableResolutions: req.body.availableResolutions,
             }
             db.videos.push(newVideo);
-        res.status(HttpStatus.Created).send(newVideo);
+            res.status(HttpStatus.Created).send(newVideo);
         }
     )
 
