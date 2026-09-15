@@ -36,7 +36,7 @@ export const validateVideoInputDto = (
     }
 
     if (!isValid){
-        errors.push({message: 'Resolution doesn\'t exists', field: 'Resolution'})
+        errors.push({message: 'Resolution doesn\'t exists', field: 'availableResolutions'})
     }
 
     return errors;
