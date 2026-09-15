@@ -39,7 +39,7 @@ videosRouter
             const errors = validateVideoInputDto(req.body);
 
             if (errors.length > 0) {
-                res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+                res.status(HttpStatus.BadRequest).send(createErrorMessages([{field: 'Body check', message: 'Incorrect data passed.'}]));
             }
             const newVideo: Video = {
                 id: db.videos.length + 1,
