@@ -56,3 +56,17 @@ videosRouter
         }
     )
 
+    .delete('/:id', (req: Request<{id: string}>, res: Response)=> {
+        const indexToDelete:number = +req.params.id;
+        const videoIndex = db.videos.findIndex(video => video.id === indexToDelete);
+
+        if (videoIndex === -1){
+            res.sendStatus(HttpStatus.NotFound);
+            return;
+        }
+
+        db.videos.splice(videoIndex, 1);
+
+        res.sendStatus(HttpStatus.NoContent);
+    })
+
