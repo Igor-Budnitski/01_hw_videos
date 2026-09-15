@@ -9,7 +9,7 @@ export const setupApp = (app: Express) => {
         res.status(200).send("Hello world!");
     });
 
-    //Each module connects to it's own route
+    //Each module connects to its own route
     app.use('/videos', videosRouter);
     return app;
 };

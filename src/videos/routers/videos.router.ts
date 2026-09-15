@@ -10,13 +10,13 @@ import {validateVideoInputDto} from "../validation/video-input-dto.validation";
 export const videosRouter = Router({});
 
 videosRouter
-
+    //delete all data from DB
     .delete('', (req: Request, res: Response) => {
         db.videos = [];
         res.sendStatus(HttpStatus.NoContent);
     })
     // Get All Videos
-    .get('', (req: Request, res) => {
+    .get('', (req: Request, res: Response) => {
         res.status(HttpStatus.Success).send(db.videos);
     })
 
