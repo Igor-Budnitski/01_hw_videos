@@ -55,7 +55,7 @@ videosRouter
             res.status(HttpStatus.Created).send(newVideo);
         }
     )
-
+    // Delete by ID - works
     .delete('/:id', (req: Request<{id: string}>, res: Response)=> {
         const indexToDelete:number = +req.params.id;
         const videoIndex = db.videos.findIndex(video => video.id === indexToDelete);
