@@ -48,7 +48,7 @@ videosRouter
                 canBeDownloaded: false,
                 minAgeRestriction: null,
                 createdAt: new Date(),
-                publicationDate: new Date(),
+                publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)),
                 availableResolutions: req.body.availableResolutions,
             }
             db.videos.push(newVideo);
