@@ -1,4 +1,4 @@
-export enum availableResolutions {
+export enum  Resolutions {
     P144 = "P144",
     P240 = "P240",
     P360 = "P360",
@@ -14,7 +14,7 @@ export type Video = {
     "title": string,
     "author": string,
     "canBeDownloaded": boolean,
-    "minAgeRestriction": number,
+    "minAgeRestriction": number | null,
     "createdAt": Date,
     "publicationDate": Date,
     "availableResolutions": string[]

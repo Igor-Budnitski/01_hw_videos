@@ -1,5 +1,5 @@
 import {VideoInputDto} from "../dto/video.input.dto";
-import {availableResolutions} from "../types/video";
+import {Resolutions} from "../types/video";
 import {ValidationError} from "../../core/types/validation-error";
 
 // Строка считается некорректной, если это не строка или её длина (после trim)
@@ -23,6 +23,10 @@ export const validateVideoInputDto = (
 
     if (isInvalidString(data.author, 1, 20)) {
         errors.push({field: 'author', message: 'Invalid author size'})
+    }
+
+    if (data.availableResolutions.length < 1){
+        errors.push({field: 'Available resolutions', message: 'Should not be empty'})
     }
 
     return errors;

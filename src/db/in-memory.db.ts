@@ -1,4 +1,4 @@
-import {Video, availableResolutions} from "../videos/types/video";
+import {Video, Resolutions} from "../videos/types/video";
 
 export const db = {
     videos: <Video[]>[
@@ -10,17 +10,17 @@ export const db = {
             "minAgeRestriction": 19,
             "createdAt": new Date(),
             "publicationDate": new Date(),
-            "availableResolutions": [availableResolutions.P144],
+            "availableResolutions": [Resolutions.P144],
         },
         {
             "id": 2,
             "title": "Lord of the Rings",
             "author": "Peter Jackson",
             "canBeDownloaded": false,
-            "minAgeRestriction": 3,
+            "minAgeRestriction": null,
             "createdAt": new Date(),
             "publicationDate": new Date(),
-            "availableResolutions": [availableResolutions.P240, availableResolutions.P1080, availableResolutions.P2160],
+            "availableResolutions": [Resolutions.P240, Resolutions.P1080, Resolutions.P2160],
         },
         {
             "id": 3,
@@ -30,7 +30,7 @@ export const db = {
             "minAgeRestriction": 14,
             "createdAt": new Date().toISOString(),
             "publicationDate": new Date(),
-            "availableResolutions": [availableResolutions.P144, availableResolutions.P1080],
+            "availableResolutions": [Resolutions.P144, Resolutions.P1080],
         },
     ]
 }
