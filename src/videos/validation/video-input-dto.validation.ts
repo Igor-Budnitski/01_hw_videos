@@ -18,15 +18,15 @@ export const validateVideoInputDto = (
     const errors: ValidationError[] = [];
 
     if (isInvalidString(data.title, 1, 40)) {
-        errors.push({field: 'title', message: 'Invalid title size'})
+        errors.push({message: 'Invalid title size', field: 'title'})
     }
 
     if (isInvalidString(data.author, 1, 20)) {
-        errors.push({field: 'author', message: 'Invalid author size'})
+        errors.push({message: 'Invalid title size', field: 'author'})
     }
 
     if (data.availableResolutions.length < 1){
-        errors.push({field: 'Available resolutions', message: 'Should not be empty'})
+        errors.push({message: 'Is empty', field: 'Resolution'})
     }
 
     return errors;
