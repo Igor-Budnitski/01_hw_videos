@@ -1,4 +1,4 @@
-import {Resolutions} from "../types/video";
+import {Resolutions, Video} from "../types/video";
 
 // Данные, которые клиент присылает при создании водителя
 // (без служебных id и createdAt — их проставляет сервер).
@@ -6,5 +6,8 @@ import {Resolutions} from "../types/video";
 export type VideoInputDto = {
     title: string,
     author: string,
-    availableResolutions: Resolutions[]
+    canBeDownloaded?: boolean,
+    minAgeRestriction?: number | null,
+    publicationDate?: Date,
+    availableResolutions: Resolutions[],
 }

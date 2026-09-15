@@ -56,11 +56,11 @@ videosRouter
         }
     )
     // Delete by ID - works
-    .delete('/:id', (req: Request<{id: string}>, res: Response)=> {
-        const indexToDelete:number = +req.params.id;
+    .delete('/:id', (req: Request<{ id: string }>, res: Response) => {
+        const indexToDelete: number = +req.params.id;
         const videoIndex = db.videos.findIndex(video => video.id === indexToDelete);
 
-        if (videoIndex === -1){
+        if (videoIndex === -1) {
             res.sendStatus(HttpStatus.NotFound);
             return;
         }
@@ -68,5 +68,30 @@ videosRouter
         db.videos.splice(videoIndex, 1);
 
         res.sendStatus(HttpStatus.NoContent);
+    })
+    /// WORK ON PUT
+    .put('/:id', (req: Request<{ id: string }, {}, VideoInputDto>, res: Response) => {
+        const errors = validateVideoInputDto(req.body);
+        if (errors.length > 0) {
+            res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+        }
+
+        const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
+
+        if (videoIndex === -1) {
+            res.sendStatus(HttpStatus.NotFound);
+            return;
+        }
+
+        db.videos[videoIndex].title = req.body.title
+        db.videos[videoIndex].author = req.body.author
+        db.videos[videoIndex].availableResolutions = req.body.availableResolutions
+        /*if (req.body.canBeDownloaded) {
+            db.videos[videoIndex].canBeDownloaded = req.body.canBeDownloaded
+        }
+        db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction ?? null
+        db.videos[videoIndex].publicationDate = req.body.publicationDate ?? new Date()*/
+
+        res.send(db.videos[videoIndex])
     })
 
