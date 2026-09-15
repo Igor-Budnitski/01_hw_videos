@@ -11,5 +11,6 @@ export const setupApp = (app: Express) => {
 
     //Each module connects to its own route
     app.use('/videos', videosRouter);
+    app.use('/testing', videosRouter);
     return app;
 };

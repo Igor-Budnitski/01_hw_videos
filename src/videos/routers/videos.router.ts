@@ -11,7 +11,7 @@ export const videosRouter = Router({});
 
 videosRouter
     //delete all data from DB
-    .delete('/testing/all-data', (req: Request, res: Response) => {
+    .delete('/videos/all-data', (req: Request, res: Response) => {
         db.videos = [];
         res.send(HttpStatus.NoContent);
     })
