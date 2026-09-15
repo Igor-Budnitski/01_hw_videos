@@ -16,11 +16,9 @@ export const validateVideoInputDto = (
     data: VideoInputDto,
 ): ValidationError[] => {
     const errors: ValidationError[] = [];
-
+    // This 3 lines below is to check if what clien send in resolution in req.boy to enum that we have.
     const validValues = Object.values(Resolutions);
-
     const clientData = data.availableResolutions;
-
     const isValid = clientData.every((item) => validValues.includes(item as any));
 
     if (isInvalidString(data.title, 1, 40)) {
