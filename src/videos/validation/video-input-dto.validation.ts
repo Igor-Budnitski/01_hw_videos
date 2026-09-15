@@ -17,6 +17,12 @@ export const validateVideoInputDto = (
 ): ValidationError[] => {
     const errors: ValidationError[] = [];
 
+    const validValues = Object.values(Resolutions);
+
+    const clientData = data.availableResolutions;
+
+    const isValid = clientData.every((item) => validValues.includes(item as any));
+
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
     }
@@ -27,6 +33,10 @@ export const validateVideoInputDto = (
 
     if (data.availableResolutions.length < 1){
         errors.push({message: 'Is empty', field: 'Resolution'})
+    }
+
+    if (!isValid){
+        errors.push({message: 'Resolution doesn\'t exists', field: 'Resolution'})
     }
 
     return errors;
