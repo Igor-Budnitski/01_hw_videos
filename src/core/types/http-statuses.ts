@@ -1,5 +1,6 @@
 export enum HttpStatus {
     Success = 200,
+    Success2 = 204,
     Created = 201,
     NoContent = 204,
     BadRequest = 400,
