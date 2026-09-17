@@ -1,6 +1,7 @@
 import {VideoInputDto} from "../dto/video.input.dto";
 import {Resolutions} from "../types/video";
 import {ValidationError} from "../../core/types/validation-error";
+import {db} from "../../db/in-memory.db";
 
 // Строка считается некорректной, если это не строка или её длина (после trim)
 // выходит за границы [min, max]. Вынесено отдельно, чтобы не дублировать проверку.
@@ -21,6 +22,7 @@ export const validateVideoInputDto = (
     const clientData = data.availableResolutions;
     const isValid = clientData.every((item) => validValues.includes(item as any));
 
+
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
     }
@@ -36,6 +38,20 @@ export const validateVideoInputDto = (
     if (!isValid){
         errors.push({message: 'Resolution doesn\'t exists', field: 'availableResolutions'})
     }
+
+    if (data.minAgeRestriction === undefined) {
+        errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
+    } else if (data.minAgeRestriction === null) {
+        // Ничего не делаем, так как null разрешен.
+        // TypeScript поймет, что дальше по коду null быть не может.
+    } else if (data.minAgeRestriction > 18 || data.minAgeRestriction < 1) {
+        errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
+    }
+
+    if (typeof data.canBeDownloaded !== 'boolean') {
+        errors.push({ message: 'Incorrect value', field: 'canBeDownloaded' })
+    }
+
 
     return errors;
 }

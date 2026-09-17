@@ -86,11 +86,11 @@ videosRouter
         db.videos[videoIndex].title = req.body.title
         db.videos[videoIndex].author = req.body.author
         db.videos[videoIndex].availableResolutions = req.body.availableResolutions
-        /*if (req.body.canBeDownloaded) {
+        if (req.body.canBeDownloaded) {
             db.videos[videoIndex].canBeDownloaded = req.body.canBeDownloaded
         }
         db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction ?? null
-        db.videos[videoIndex].publicationDate = req.body.publicationDate ?? new Date()*/
+        db.videos[videoIndex].publicationDate = req.body.publicationDate ?? new Date()
 
         res.send(db.videos[videoIndex])
     })
