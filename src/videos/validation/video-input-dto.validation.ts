@@ -21,6 +21,30 @@ export const validateVideoInputDto = (
     const validValues = Object.values(Resolutions);
     const clientData = data.availableResolutions;
     const isValid = clientData.every((item) => validValues.includes(item as any));
+    const age = data.minAgeRestriction;
+
+// Проверяем, что значение является ЛИБО null, ЛИБО числом в диапазоне от 1 до 18
+    if (age !== null && (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age))) {
+        errors.push({message: 'Invalid age', field: 'minAgeRestriction'});
+    }
+
+    const canDownload = data.canBeDownloaded;
+
+// Проверяем, является ли тип строго 'boolean'
+    if (typeof canDownload !== 'boolean') {
+        errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
+    }
+
+    const pubDate = data.publicationDate;
+
+// Проверяем только если поле передано (не равно undefined и null)
+    if (pubDate !== undefined && pubDate !== null) {
+        // 1. Проверяем, что это строка
+        // 2. Проверяем, что встроенный метод Date.parse() смог её распознать
+        if (typeof pubDate !== 'string' || Number.isNaN(Date.parse(pubDate))) {
+            errors.push({message: 'Invalid value', field: 'publicationDate'});
+        }
+    }
 
 
     if (isInvalidString(data.title, 1, 40)) {
@@ -39,7 +63,7 @@ export const validateVideoInputDto = (
         errors.push({message: 'Resolution doesn\'t exists', field: 'availableResolutions'})
     }
 
-    if (data.minAgeRestriction === undefined) {
+/*    if (data.minAgeRestriction === undefined) {
         errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
     } else if (data.minAgeRestriction === null) {
         // Ничего не делаем, так как null разрешен.
@@ -50,7 +74,7 @@ export const validateVideoInputDto = (
 
     if (typeof data.canBeDownloaded !== 'boolean') {
         errors.push({ message: 'Incorrect value', field: 'canBeDownloaded' })
-    }
+    }*/
 
     return errors;
 }
