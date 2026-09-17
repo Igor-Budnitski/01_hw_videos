@@ -92,6 +92,6 @@ videosRouter
         db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction ?? null
         db.videos[videoIndex].publicationDate = req.body.publicationDate ?? new Date()
 
-        res.send(db.videos[videoIndex])
+        res.status(HttpStatus.NoContent);
     })
 
