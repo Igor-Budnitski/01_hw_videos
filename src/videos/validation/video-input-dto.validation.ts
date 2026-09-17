@@ -39,7 +39,7 @@ export const validateVideoInputDto = (
         errors.push({message: 'Resolution doesn\'t exists', field: 'availableResolutions'})
     }
 
-  /*  if (data.minAgeRestriction === undefined) {
+    if (data.minAgeRestriction === undefined) {
         errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
     } else if (data.minAgeRestriction === null) {
         // Ничего не делаем, так как null разрешен.
@@ -51,7 +51,6 @@ export const validateVideoInputDto = (
     if (typeof data.canBeDownloaded !== 'boolean') {
         errors.push({ message: 'Incorrect value', field: 'canBeDownloaded' })
     }
-*/
 
     return errors;
 }
