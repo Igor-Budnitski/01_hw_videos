@@ -74,6 +74,7 @@ videosRouter
         const errors = validateVideoInputDto(req.body);
         if (errors.length > 0) {
             res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+            return;
         }
 
         const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)

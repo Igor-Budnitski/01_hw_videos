@@ -2,6 +2,7 @@ import {VideoInputDto} from "../dto/video.input.dto";
 import {Resolutions} from "../types/video";
 import {ValidationError} from "../../core/types/validation-error";
 import {db} from "../../db/in-memory.db";
+import {createErrorMessages} from "../../core/utils/error.utils";
 
 // Строка считается некорректной, если это не строка или её длина (после trim)
 // выходит за границы [min, max]. Вынесено отдельно, чтобы не дублировать проверку.
@@ -22,17 +23,18 @@ export const validateVideoInputDto = (
     const clientData = data.availableResolutions;
     const isValid = clientData.every((item) => validValues.includes(item as any));
     const age = data.minAgeRestriction;
+    const canDownload = data.canBeDownloaded;
 
 // Проверяем, что значение является ЛИБО null, ЛИБО числом в диапазоне от 1 до 18
     if (age !== null && (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age))) {
         errors.push({message: 'Invalid age', field: 'minAgeRestriction'});
+        createErrorMessages(errors); //new
     }
-
-    const canDownload = data.canBeDownloaded;
 
 // Проверяем, является ли тип строго 'boolean'
     if (typeof canDownload !== 'boolean') {
         errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
+        createErrorMessages(errors); //new
     }
 
     const pubDate = data.publicationDate;
@@ -45,36 +47,24 @@ export const validateVideoInputDto = (
             errors.push({message: 'Invalid value', field: 'publicationDate'});
         }
     }
-
-
+//  Проверяем поле Title
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
+        createErrorMessages(errors); //new
     }
-
+//  Проверяем поле author елси
     if (isInvalidString(data.author, 1, 20)) {
         errors.push({message: 'Invalid title size', field: 'author'})
+        createErrorMessages(errors); //new
     }
 
-    if (data.availableResolutions.length < 1){
+    if (data.availableResolutions.length < 1) {
         errors.push({message: 'Is empty', field: 'Resolution'})
     }
 
-    if (!isValid){
+    if (!isValid) {
         errors.push({message: 'Resolution doesn\'t exists', field: 'availableResolutions'})
     }
-
-/*    if (data.minAgeRestriction === undefined) {
-        errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
-    } else if (data.minAgeRestriction === null) {
-        // Ничего не делаем, так как null разрешен.
-        // TypeScript поймет, что дальше по коду null быть не может.
-    } else if (data.minAgeRestriction > 18 || data.minAgeRestriction < 1) {
-        errors.push({ message: 'Incorrect age', field: 'minAgeRestriction' })
-    }
-
-    if (typeof data.canBeDownloaded !== 'boolean') {
-        errors.push({ message: 'Incorrect value', field: 'canBeDownloaded' })
-    }*/
 
     return errors;
 }
