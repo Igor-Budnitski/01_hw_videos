@@ -85,7 +85,7 @@ videosRouter
        }
 
         db.videos[videoIndex].title = req.body.title;
-        db.videos[videoIndex].author = req.body.title;
+        db.videos[videoIndex].author = req.body.author;
         db.videos[videoIndex].canBeDownloaded = Boolean(req.body.title);
         db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction;
         db.videos[videoIndex].publicationDate = req.body.publicationDate;
