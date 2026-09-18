@@ -28,13 +28,11 @@ export const validateVideoInputDto = (
 // Проверяем, что значение является ЛИБО null, ЛИБО числом в диапазоне от 1 до 18
     if (age !== null && (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age))) {
         errors.push({message: 'Invalid age', field: 'minAgeRestriction'});
-        createErrorMessages(errors); //new
     }
 
 // Проверяем, является ли тип строго 'boolean'
     if (typeof canDownload !== 'boolean') {
         errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
-        createErrorMessages(errors); //new
     }
 
     const pubDate = data.publicationDate;
@@ -50,12 +48,10 @@ export const validateVideoInputDto = (
 //  Проверяем поле Title
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
-        createErrorMessages(errors); //new
     }
 //  Проверяем поле author елси
     if (isInvalidString(data.author, 1, 20)) {
         errors.push({message: 'Invalid title size', field: 'author'})
-        createErrorMessages(errors); //new
     }
 
     if (data.availableResolutions.length < 1) {

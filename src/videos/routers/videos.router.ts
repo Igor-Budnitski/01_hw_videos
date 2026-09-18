@@ -71,27 +71,20 @@ videosRouter
     })
     /// WORK ON PUT
     .put('/:id', (req: Request<{ id: string }, {}, VideoInputDto>, res: Response) => {
+
+        const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
+        if (videoIndex === -1) {
+            res.sendStatus(HttpStatus.NotFound);
+            return;
+        }
+
         const errors = validateVideoInputDto(req.body);
         if (errors.length > 0) {
             res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
             return;
         }
 
-        const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
-
-        if (videoIndex === -1) {
-            res.sendStatus(HttpStatus.NotFound);
-            return;
-        }
-
-        db.videos[videoIndex].title = req.body.title
-        db.videos[videoIndex].author = req.body.author
-        db.videos[videoIndex].availableResolutions = req.body.availableResolutions
-
-
-        db.videos[videoIndex].canBeDownloaded = req.body.canBeDownloaded ?? false
-        db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction ?? null
-        db.videos[videoIndex].publicationDate = req.body.publicationDate ?? new Date()
+        db.videos[videoIndex] = {...db.videos[videoIndex], ...req.body};
 
         res.status(HttpStatus.NoContent).send("OK");
     })
