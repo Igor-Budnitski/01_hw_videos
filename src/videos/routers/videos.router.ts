@@ -70,22 +70,22 @@ videosRouter
         res.sendStatus(HttpStatus.NoContent);
     })
     /// WORK ON PUT
-    .put('/:id', (req: Request<{ id: string }, {}, VideoInputDto>, res: Response) => {
-
-        const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
-        if (videoIndex === -1) {
-            res.sendStatus(HttpStatus.NotFound);
-            return;
-        }
-
-        const errors = validateVideoInputDto(req.body);
-        if (errors.length > 0) {
-            res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
-            return;
-        }
-
-        db.videos[videoIndex] = {...db.videos[videoIndex], ...req.body};
-
-        res.status(HttpStatus.NoContent).send("OK");
-    })
+    // .put('/:id', (req: Request<{ id: string }, {}, VideoInputDto>, res: Response) => {
+    //
+    //     const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
+    //     if (videoIndex === -1) {
+    //         res.sendStatus(HttpStatus.NotFound);
+    //         return;
+    //     }
+    //
+    //     const errors = validateVideoInputDto(req.body);
+    //     if (errors.length > 0) {
+    //         res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+    //         return;
+    //     }
+    //
+    //     db.videos[videoIndex] = {...db.videos[videoIndex], ...req.body};
+    //
+    //     res.status(HttpStatus.NoContent).send("OK");
+    // })
 
