@@ -32,25 +32,21 @@ export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): Validat
     // Title check
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
-        return errors;
     }
 
     // Author check
     if (isInvalidString(data.author, 1, 20)) {
         errors.push({message: 'Invalid title size', field: 'author'})
-        return errors
     }
 
     // canBeDownloaded check
     if (typeof cd !== 'boolean') {
         errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
-        return errors;
     }
 
     // minAgeRestriction check
     if (age !== null && (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age))) {
         errors.push({message: 'Invalid age', field: 'minAgeRestriction'});
-        return errors;
     }
 
     // publicationDate check
@@ -59,17 +55,13 @@ export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): Validat
         // 2. Проверяем, что встроенный метод Date.parse() смог её распознать
         if (typeof pubDate !== 'string' || Number.isNaN(Date.parse(pubDate))) {
             errors.push({message: 'Invalid value', field: 'publicationDate'});
-            return errors;
         }
     }
 
     //Check if Resolutions is not empty & contains correct data.
     if (data.availableResolutions.length < 1 && !isValid) {
         errors.push({message: 'Is empty', field: 'Resolution'})
-        return errors;
     }
-
-
 
     return errors;
 }
