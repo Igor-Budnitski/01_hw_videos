@@ -11,7 +11,57 @@ const isInvalidString = (value: unknown, min: number, max: number): boolean =>
     value.trim().length < min ||
     value.trim().length > max;
 
-export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): ValidationError[] => {
+export const validateUpdateVideoInputDto = (data: updateVideoInputDto): ValidationError[] => {
+    const errors: ValidationError[] = [];
+
+    // 1. Title check
+    if (isInvalidString(data.title, 1, 40)) {
+        errors.push({ message: 'Invalid title size', field: 'title' });
+    }
+
+    // 2. Author check
+    // ⚠️ Внимание: у вас в тексте ошибки для автора было написано 'Invalid title size' -> исправил на author
+    if (isInvalidString(data.author, 1, 20)) {
+        errors.push({ message: 'Invalid author size', field: 'author' });
+    }
+
+    // 3. canBeDownloaded check
+    // ⚠️ Проверяем, что если поле передано, оно ОБЯЗАТЕЛЬНО должно быть boolean
+    if (data.canBeDownloaded !== undefined && typeof data.canBeDownloaded !== 'boolean') {
+        errors.push({ message: 'Invalid value', field: 'canBeDownloaded' });
+    }
+
+    // 4. minAgeRestriction check
+    const age = data.minAgeRestriction;
+    if (age !== undefined && age !== null) {
+        if (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age)) {
+            errors.push({ message: 'Invalid age', field: 'minAgeRestriction' });
+        }
+    }
+
+    // 5. publicationDate check
+    const pubDate = data.publicationDate;
+    if (pubDate !== undefined && pubDate !== null) {
+        if (typeof pubDate !== 'string' || Number.isNaN(Date.parse(pubDate))) {
+            errors.push({ message: 'Invalid value', field: 'publicationDate' });
+        }
+    }
+
+    // 6. Resolution check (перенесли вниз и добавили безопасную проверку массива)
+    const validValues = Object.values(Resolutions);
+    const clientData = data.availableResolutions;
+
+    if (clientData !== undefined && clientData !== null) {
+        if (!Array.isArray(clientData) || !clientData.every((item) => validValues.includes(item as any))) {
+            errors.push({ message: 'Invalid resolution', field: 'availableResolutions' });
+        }
+    }
+
+    return errors;
+};
+
+
+/*export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): ValidationError[] => {
     const errors: ValidationError[] = [];
 
     // For resolution check
@@ -23,7 +73,7 @@ export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): Validat
     const age = data.minAgeRestriction;
 
     // For canBeDownloaded check
-    const cd = data.canBeDownloaded;
+    // const cd = data.canBeDownloaded;
 
     // For publicationDate check
     const pubDate = data.publicationDate;
@@ -40,7 +90,7 @@ export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): Validat
     }
 
     // canBeDownloaded check
-    if (typeof cd !== 'boolean') {
+    if (typeof data.canBeDownloaded !== 'boolean') {
         errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
     }
 
@@ -64,5 +114,5 @@ export const validateUpdateVideoInputDto = (data: updateVideoInputDto,): Validat
     }
 
     return errors;
-}
+}*/
 
