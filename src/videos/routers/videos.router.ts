@@ -3,8 +3,9 @@ import {db} from "../../db/in-memory.db";
 import {HttpStatus} from "../../core/types/http-statuses";
 import {createErrorMessages} from "../../core/utils/error.utils";
 import {Resolutions, Video} from "../types/video";
-import {VideoInputDto} from "../dto/video.input.dto";
+import {CreateVideoInputDto} from "../dto/createVideoInputDto";
 import {validateVideoInputDto} from "../validation/video-input-dto.validation";
+import {updateVideoInputDto} from "../dto/updatevideo.input.dto";
 
 
 export const videosRouter = Router({});
@@ -34,8 +35,7 @@ videosRouter
         res.status(HttpStatus.Success).send(video);
     })
     // Post a new video
-
-    .post('', (req: Request<{}, {}, VideoInputDto>, res: Response) => {
+    .post('', (req: Request<{}, {}, CreateVideoInputDto>, res: Response) => {
             const errors = validateVideoInputDto(req.body);
 
             if (errors.length > 0) {
@@ -70,22 +70,27 @@ videosRouter
         res.sendStatus(HttpStatus.NoContent);
     })
     /// WORK ON PUT
-    // .put('/:id', (req: Request<{ id: string }, {}, VideoInputDto>, res: Response) => {
-    //
-    //     const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
-    //     if (videoIndex === -1) {
-    //         res.sendStatus(HttpStatus.NotFound);
-    //         return;
-    //     }
-    //
-    //     const errors = validateVideoInputDto(req.body);
-    //     if (errors.length > 0) {
-    //         res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
-    //         return;
-    //     }
-    //
-    //     db.videos[videoIndex] = {...db.videos[videoIndex], ...req.body};
-    //
-    //     res.status(HttpStatus.NoContent).send("OK");
-    // })
+    .put('/:id', (req: Request<{ id: string }, {}, updateVideoInputDto>, res: Response) => {
+
+       const videoIndex: number = db.videos.findIndex(video => video.id === +req.params.id)
+        if (videoIndex === -1) {
+            res.sendStatus(HttpStatus.NotFound);
+            return;
+        }
+
+        const errors = validateVideoInputDto(req.body);
+        if (errors.length > 0) {
+            res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+            return;
+       }
+
+        db.videos[videoIndex].title = req.body.title;
+        db.videos[videoIndex].author = req.body.title;
+        db.videos[videoIndex].canBeDownloaded = Boolean(req.body.title);
+        db.videos[videoIndex].minAgeRestriction = req.body.minAgeRestriction;
+        db.videos[videoIndex].publicationDate = req.body.publicationDate;
+        db.videos[videoIndex].availableResolutions = req.body.availableResolutions;
+
+        res.status(HttpStatus.NoContent).send("OK");
+    })
 

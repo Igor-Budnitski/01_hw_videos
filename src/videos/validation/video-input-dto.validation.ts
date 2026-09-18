@@ -1,4 +1,4 @@
-import {VideoInputDto} from "../dto/video.input.dto";
+import {CreateVideoInputDto} from "../dto/createVideoInputDto";
 import {Resolutions} from "../types/video";
 import {ValidationError} from "../../core/types/validation-error";
 import {db} from "../../db/in-memory.db";
@@ -15,36 +15,14 @@ const isInvalidString = (value: unknown, min: number, max: number): boolean =>
 // Возвращает список ошибок; пустой список означает, что данные корректны.
 
 export const validateVideoInputDto = (
-    data: VideoInputDto,
+    data: CreateVideoInputDto,
 ): ValidationError[] => {
     const errors: ValidationError[] = [];
-    // This 3 lines below is to check if what clien send in resolution in req.boy to enum that we have.
+
     const validValues = Object.values(Resolutions);
     const clientData = data.availableResolutions;
     const isValid = clientData.every((item) => validValues.includes(item as any));
-    const age = data.minAgeRestriction;
-    const canDownload = data.canBeDownloaded;
 
-// Проверяем, что значение является ЛИБО null, ЛИБО числом в диапазоне от 1 до 18
-    if (age !== null && (typeof age !== 'number' || age < 1 || age > 18 || !Number.isInteger(age))) {
-        errors.push({message: 'Invalid age', field: 'minAgeRestriction'});
-    }
-
-// Проверяем, является ли тип строго 'boolean'
-    if (typeof canDownload !== 'boolean') {
-        errors.push({message: 'Invalid value', field: 'canBeDownloaded'});
-    }
-
-    const pubDate = data.publicationDate;
-
-// Проверяем только если поле передано (не равно undefined и null)
-    if (pubDate !== undefined && pubDate !== null) {
-        // 1. Проверяем, что это строка
-        // 2. Проверяем, что встроенный метод Date.parse() смог её распознать
-        if (typeof pubDate !== 'string' || Number.isNaN(Date.parse(pubDate))) {
-            errors.push({message: 'Invalid value', field: 'publicationDate'});
-        }
-    }
 //  Проверяем поле Title
     if (isInvalidString(data.title, 1, 40)) {
         errors.push({message: 'Invalid title size', field: 'title'})
